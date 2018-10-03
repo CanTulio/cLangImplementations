@@ -9,14 +9,15 @@ void swap (DATA v[], int imax, int end) {
 
 
 void insertionSort(DATA v[], int start, int end) {
-    int OrderedIndex, UnorderedIndex;
+    int OrderedIndex, UnorderedIndex, current;
 
     for (UnorderedIndex = start + 1; UnorderedIndex <= end; UnorderedIndex ++) { //Invariant : All elements Smaller than UnorderedIndex are Sorted
+        current = v[UnorderedIndex];
 
-        for (OrderedIndex = UnorderedIndex - 1; OrderedIndex > 0 && v[OrderedIndex] < v [OrderedIndex - 1]; OrderedIndex --)
-            swap(v, OrderedIndex-1, OrderedIndex  );
+        for (OrderedIndex = UnorderedIndex - 1; OrderedIndex >= 0 && v[OrderedIndex] > current; OrderedIndex --)
+            v[OrderedIndex + 1] = v[OrderedIndex];
             // Invariant : All elements  smaller than OrderedIndex are certainly sorted.
-
+        v[OrderedIndex + 1] = current;
     }
 }
 
