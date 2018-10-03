@@ -1,12 +1,4 @@
 #include "data.h"
-void swap (DATA v[], int imax, int end) {
-
-    int aux = v[end];
-    v[end] = v[imax];
-    v[imax] = aux;
-
-}
-
 
 void insertionSort(DATA v[], int start, int end) {
     int OrderedIndex, UnorderedIndex, current;
