@@ -1,5 +1,7 @@
 #include "data.h"
-
+void swap (DATA v[], int imax, int end);
+void selection (DATA v[], int n);
+int *generatesRandomArray(int *v, int size);
 
 void swap (DATA v[], int imax, int end) {
 
@@ -35,7 +37,7 @@ int *generatesRandomArray(int *v, int size) {
 
 int main () {
 
-    int max = 100000;
+    int max = 1000;
     int  * v = generatesRandomArray (v, max);
     for (int i = 0; i < max; printf("%d ", v[i++] ) );
     printf ("\n------------\n");

@@ -1,5 +1,8 @@
 #include "data.h"
 
+void insertionSort(DATA v[], int start, int end);
+int *generatesRandomArray(int *v, int size);
+
 void insertionSort(DATA v[], int start, int end) {
     int OrderedIndex, UnorderedIndex, current;
 
