@@ -1,0 +1,202 @@
+Fila de prioridade : Implementa um conjunto s de elementos,
+cada elemento é associado a uma chave(no caso do array, a chave é o valor do elemento, não o indice ).
+
+
+Operações : 
+
+    Inserção(S,x) : Insere elemento x no conjunto S
+    Maximo(S) : retorna o elemento de S com a chave maxima
+    extrair_maximo(S) : retorna e remove de de S o elemento de chave maxima
+    alterar_prioridade(S,x,k) : Aumentar ou reduzir a prioridade de um elemento no conjunto.
+
+
+
+Heap : Uma estrutura de dados abstrata.
+    *Uma implementação de fila de prioridade, é um array
+    visualizado como uma árvore binária quase completa : 
+
+    -->É uma arvore binaria completa até o penultimo nivel
+
+    --> Os elementos filhos devem ser menores que o respectivo
+    elemento pai (se o heap maxHeap), ou maiores se for 
+    um heap do tipo MinHeap 
+        OBS : um heap que não é nem maxHeap ou MinHeap ainda é um 
+        heap (checar)
+
+    --> OS elementos do último nível estão mais a esquerda possível 
+
+
+    * Essa estrutura possibilita a representaçaão de um heap da seguinte forma : 
+    
+
+    v = [43,21,17,20,1,8,14,7,4] --->
+
+                   43
+            21           17
+        20      1     8       14 
+    7       4
+
+    * O elemento de índice 0 é a raiz da arvore.
+    * Os elementos 2*n + 1 e 2*n + 2 são filhos do índice n
+    * Pai de n : (n-1)/2 (divisão inteira!)
+
+Sobre as operações num MaxHeap : 
+
+    * Maximo(S) : trivial.
+    * extrair_maximo(S) : Não trivial! Removendo o elemento da raiz, 
+    devemos alterar a estrutura do heap para realocar o maior elemento para a raiz, e toda a hierarquia dos elementos
+
+
+Relação com ordenação : 
+
+    * Se conseguirmos colocarmos uma lista em formato de heap, e 
+    depois continuamente removermos o maior elemento, podemos obter 
+    um algoritmo de ordenação.
+
+    * Como modificar o array e manter a estrutura de maxHeap?
+ 
+-> Max_heap_fica : Operação para transformar um array desordenado em um MaxHeap
+    *Corrige uma única violação da propriedade de Heap na raiz de alguma sub árvore.
+    *Seria interessante poder usar essa função repetidas vezes, de forma recursiva (dá 
+    pra fazer recursivo porque as folhas da árvore são maxheaps).
+
+    Algoritmo : 
+    max_heapifica(S, n) : 
+        Presuma que as arvores que tem raiz em 2n+1 e 2n+2 são max heaps
+
+        Ex : max_heapfica(S, 1)
+
+
+
+                        16(0)
+                4(1)               10(2)
+                
+        14(3)           7(4)      9(5)       3(6)
+
+    2(7)        8(8)      1(9)
+
+        Nesse exemplo, para que max_heapfica funcione, basta que as subarvores com 
+        filhas do nó 1 sejam um maxheap. (nesse caso, são.)
+
+
+    Enfim, tudo que o max_heapfica faz é trocar elementos.
+        
+        
+        -->troque S[1] com S[3].
+
+                                    16(0)
+                            14(1)               10(2)
+                            
+                    4(3)           7(4)      9(5)       3(6)
+
+                2(7)        8(8)      1(9)
+
+        max_heapfica(S,4) : faço isso porque a subarvore com raiz em (3) não é um heap.
+
+            --->troque s[3] com s[8]
+
+
+
+                                    16(0)
+                            14(1)               10(2)
+                            
+                    8(3)           7(4)      9(5)       3(6)
+
+                2(7)        4(8)      1(9)
+
+        Pronto!
+
+
+    -----------------------------------------------------------------------------
+
+    -> Complexidade? O(logn)
+
+
+----> Construindo um maxheap
+
+    Queremos converter um Array em um maxheap
+
+    constroi_maxHeap(A) :
+
+        for (i = n/2; i >= 1; i-- ){ // Esse for começa nas folhas e vai até a raiz
+            max_heapfica(A,i)
+        }
+
+        Eu começo em n/2 porque todos elementos em [n/2, n/2 + 1 ....... n são folhas]
+
+        E isso funciona porque toda vez que eu champo o max_heapfica, a condição está pré estabelecida : todas subarvores nos elementos filhos do elemento atual são heaps. Isso é verdadeiro por vacuidade nas folhas.
+
+
+        Em uma análise simples, esse algoritmo parece ter complexidade O(n*logn) : eu 
+        executo mais ou menos n vezes o max_heapfica, que tem complexidade O(logn), 
+        então o constroi_maxheap tem complexidade nlogn
+
+        Em uma análise mais cuidadosa, podemos chegar em O(n) : nos nós/folhas mais 
+        para "baixo", eu faço poucas operações para muitos nós, e quanto mais para 
+        cima vou, mais operações faço, no entanto, menos elementos tenho (rever esse parte...)
+
+
+        Em geral : max_heapfica toma o(constante) para nós imediatamente acima das folhas, e O(n) em geral para nós quaisqueres.
+
+        Basicamente pe uma soma : 
+
+        n/4(c) + n/8*(2c) + n/16*ec + .... 1*(logn) (raíz da arvore)
+        .
+        .
+        .
+
+        MAGIA
+        .
+        .
+        .
+
+        O(n) (ver o vídeo em https://youtu.be/B7hVxCmfPtM?t=2480, ajudou bastante!)
+---> HeapSort
+
+    -> Construa uma maxHeap do seu array desordenado
+    -> encontre o elmento maximo em a[0].
+    -> troque A[n] com A[0].
+        -> Agora o elemento maximo está no fim do array
+    -> remova o tamanho do Heap (assim, desconsideramos esse cara).
+    -> a nova raiz talvez quebre a propriedade de max heap, mas sabemos que os caras abaixo são heaps
+    -> roda maxHeapfica.
+
+    Exemplo bem simples : 
+
+    v = [4,2,1]
+    HEapsize = 3
+                4
+            2       1
+
+    -> Já é maxHeap.
+    -> elemento maximo é : 4
+    -> troco a[0] com a[2]
+
+                1
+            2       4
+
+    -> reduzo HEapsize
+        v = [1,2,4]
+        heapsize = 2
+                1
+            2
+
+    -> MAxHeapfico
+        v = [2,1,4]
+        heapsize = 2
+                2
+            1
+
+    -> Elemento maximo = 2
+    -> troco a[0] com a[1] (a[heapsize - 1])
+
+                1
+            2
+
+    -> reduzo heapsize
+    v = [1,2,4]
+    heapsize = 1
+                1
+
+
+    heapsize = 1 ---> encerro!
