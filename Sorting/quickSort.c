@@ -1,8 +1,9 @@
 #include "data.h"
 
 
-int *generatesRandomArray(int *v, int size);
 void quicksort(int *v, int start, int end);
+int *generatesRandomArray(int *v, int size);
+void swap (DATA v[], int imax, int end);
 
 int *generatesRandomArray(int *v, int size) {
     v = malloc(size * sizeof(int));
@@ -28,6 +29,7 @@ int main () {
     printf ("\n------------\n");
     quicksort(v, 0, max);
     for (int i = 0; i < max; printf("%d ", v[i++] ) );
+
     return 0;
     
 }
@@ -47,7 +49,7 @@ int separate(int *v, int start, int end) {
 
 void quicksort(int *v, int start, int end) {
     int pivot;
-    if ( (end - start) > 2 ) {
+    if ( (end - start) > 0 ) {
         pivot = separate(v, start, end);
         quicksort(v, start, pivot);
         quicksort(v, pivot+1, end);
